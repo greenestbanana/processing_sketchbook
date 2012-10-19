@@ -1,0 +1,163 @@
+<Fractals>
+	<Fractal name="Sierpinski Triangle" defaultIterations="8" sweepStyle="4">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0" y="0" />
+			<Point x="0.25" y="0.4330127018922193" />
+			<Point x="0.75" y="0.4330127018922193" />
+			<Point x="1" y="0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Pretty Flower" defaultIterations="8" sweepStyle="1">
+		<Base>
+			<Point x="0" y="0.3" />
+			<Point x="0" y="0.7" />
+			<Point x="0.3" y="1.0" />
+			<Point x="0.7" y="1.0" />
+			<Point x="1.0" y="0.7" />
+			<Point x="1.0" y="0.3" />
+			<Point x="0.7" y="0" />
+			<Point x="0.3" y="0" />
+			<Point x="0" y="0.3" />
+		</Base>
+		<Motif>
+			<Point x="0" y="0" />
+			<Point x="0.25" y="0.4330127018922193" />
+			<Point x="0.75" y="0.4330127018922193" />
+			<Point x="1" y="0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Sierpinski Triangle Cross" defaultIterations="8" sweepStyle="4">
+		<Base>
+			<Point x="0" y="0.3" />
+			<Point x="0" y="0.7" />
+			<Point x="0.3" y="1.0" />
+			<Point x="0.7" y="1.0" />
+			<Point x="1.0" y="0.7" />
+			<Point x="1.0" y="0.3" />
+			<Point x="0.7" y="0" />
+			<Point x="0.3" y="0" />
+			<Point x="0" y="0.3" />
+		</Base>
+		<Motif>
+			<Point x="0" y="0" />
+			<Point x="0.25" y="0.4330127018922193" />
+			<Point x="0.75" y="0.4330127018922193" />
+			<Point x="1" y="0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Dragon" defaultIterations="14" sweepStyle="2">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0" y="0" />
+			<Point x="0.5" y="0.5" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Gridlock" defaultIterations="4" sweepStyle="0">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0" y="0.0" />
+			<Point x="0.25" y="0.0" />
+			<Point x="0.25" y="-0.5" />
+			<Point x="0.5" y="-0.5" />
+			<Point x="0.5" y="0.5" />
+			<Point x="0.75" y="0.5" />
+			<Point x="0.75" y="0.0" />
+			<Point x="1.0" y="0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Koch Snowflake" defaultIterations="4" sweepStyle="0">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+			<Point x="1.866" y="0.5" />
+			<Point x="1" y="1" />
+			<Point x="0" y="1" />
+			<Point x="-0.866" y="0.5" />
+			<Point x="0" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.25" y="0.0" />
+			<Point x="0.5" y="0.4" />
+			<Point x="0.75" y="0.0" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Koch-esque Squares" defaultIterations="4" sweepStyle="0">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.25" y="0.0" />
+			<Point x="0.25" y="0.5" />
+			<Point x="0.75" y="0.5" />
+			<Point x="0.75" y="0.0" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Ribbon" defaultIterations="6" sweepStyle="0">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.5" y="0.0" />
+			<Point x="0.5" y="0.5" />
+			<Point x="1.0" y="0.5" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Swirling Grid" defaultIterations="6" sweepStyle="3">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="1" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.5" y="0.0" />
+			<Point x="0.5" y="0.5" />
+			<Point x="1.0" y="0.5" />
+		</Motif>
+	</Fractal>
+	<Fractal name="The Saddest Triangle" defaultIterations="6" sweepStyle="0">
+		<Base>
+			<Point x="1" y="0" />
+			<Point x="0" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.5" y="0.0" />
+			<Point x="0.25" y="0.5" />
+			<Point x="0.75" y="0.5" />
+			<Point x="0.5" y="0.0" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Space-filled Triangle" defaultIterations="6" sweepStyle="1">
+		<Base>
+			<Point x="0" y="0" />
+			<Point x="1" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.5" y="0.0" />
+			<Point x="0.25" y="0.4330127018922193" />
+			<Point x="0.75" y="0.4330127018922193" />
+			<Point x="0.5" y="0.0" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+</Fractals>
