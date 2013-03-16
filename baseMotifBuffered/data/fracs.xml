@@ -79,17 +79,22 @@
 	<Fractal name="Koch Snowflake" defaultIterations="4" sweepStyle="0">
 		<Base>
 			<Point x="0" y="0" />
-			<Point x="-0.5" y="0.866" />
-			<Point x="0" y="1.772" />
-			<Point x="1" y="1.772" />
-			<Point x="1.5" y="0.866" />
+			<Point x="0.5" y="0.86602540378" />
 			<Point x="1" y="0" />
 			<Point x="0" y="0" />
+		</Base>
+		<Motif>
+			<Point x="0.0" y="0.0" />
+			<Point x="0.25" y="0.0" />
+			<Point x="0.5" y="0.43301270189" />
+			<Point x="0.75" y="0.0" />
+			<Point x="1.0" y="0.0" />
+		</Motif>
+	</Fractal>
+	<Fractal name="Koch Snowflake" defaultIterations="4" sweepStyle="0">
+		<Base>
+			<Point x="0" y="0" />
 			<Point x="1" y="0" />
-			<Point x="1.5" y="0.866" />
-			<Point x="1" y="1.772" />
-			<Point x="0" y="1.772" />
-			<Point x="-0.5" y="0.866" />
 			<Point x="0" y="0" />
 		</Base>
 		<Motif>

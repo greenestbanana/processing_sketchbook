@@ -47,8 +47,8 @@ public class BMFractal
 
     zeroDegreeLine = new PVector(1.0f, 0.0f);
 
-    spectrum = new color[11];
-    /*
+    spectrum = new color[7];
+    
     spectrum[0] = #FF0000;
     spectrum[1] = #FFFF00;
     spectrum[2] = #00FF00;
@@ -56,7 +56,7 @@ public class BMFractal
     spectrum[4] = #0000FF;
     spectrum[5] = #FF00FF;
     spectrum[6] = #FF0000;
-    */
+    /*
     spectrum[0] = #FFFFFF;
     spectrum[1] = #000000;
     spectrum[2] = #FFFFFF;
@@ -68,6 +68,7 @@ public class BMFractal
     spectrum[8] = #FFFFFF;
     spectrum[9] = #000000;
     spectrum[10] = #FFFFFF;
+    */
 
     needsUpdate = true;
   }
