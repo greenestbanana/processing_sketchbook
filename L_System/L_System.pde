@@ -1,25 +1,29 @@
 
 LanguageDescription curLanguage;
 
-float sysAngle = THIRD_PI;
+float sysAngle = HALF_PI;
 
-int iterations = 2;
+int iterations = 3;
 
-String axiom = "F--F--F";
+String axiom = "FX";
 HashMap productions; 
 
 void setup() {
-  size(800, 800, P3D);
+  size(600, 600, P2D);
   colorMode(RGB, 255);
   
   productions = new HashMap();
-  productions.put('F', "F+F--F+F");
+  productions.put('X', "X+YF+");
+  productions.put('Y', "-FX-Y");
   
-  curLanguage = new LanguageDescription(axiom, productions, sysAngle, iterations); 
+  ArrayList constants = new ArrayList();
+  constants.add('F');
+  
+  curLanguage = new LanguageDescription(axiom, productions, sysAngle, iterations, constants, null); 
 }
 
 void draw() {
-  background(0xaeaeae);
+  background(0x000000);
   
   curLanguage.draw();
 }

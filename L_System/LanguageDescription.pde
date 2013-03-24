@@ -15,6 +15,7 @@ class LanguageDescription {
   ArrayList drawConstants;
   ArrayList skipConstants;
   
+  color[] spectrum;
   float margin = 5.0f;
   
   boolean needsUpdate;
@@ -34,15 +35,27 @@ class LanguageDescription {
     minPoint = new PVector(0,0);
     maxPoint = new PVector(0,0);
     
+    drawConstants = theDrawConstants;
     if(drawConstants == null) {
       drawConstants = new ArrayList();
       drawConstants.add('F');
     }
     
+    skipConstants = theSkipConstants;
     if(skipConstants == null) {
       skipConstants = new ArrayList();
       skipConstants.add('G');
     }
+    
+    spectrum = new color[7];
+    
+    spectrum[0] = #FF0000;
+    spectrum[1] = #FFFF00;
+    spectrum[2] = #00FF00;
+    spectrum[3] = #00FFFF;
+    spectrum[4] = #0000FF;
+    spectrum[5] = #FF00FF;
+    spectrum[6] = #FF0000;
     
     needsUpdate = true;
   }
@@ -100,11 +113,21 @@ class LanguageDescription {
   }
   
   void traverseSystem(int pointFunc) {
+    int totalLineCount = 0;
+    int currentLineIndex = 0;
     PVector position = new PVector();
     if(pointFunc == MIN_MAX_FUNC) {
       position.set(0,0,0);
     } else {
       position.set((-minPoint.x * lineLength) + margin, (-minPoint.y * lineLength) + margin,0);
+      for(int i = 0; i < drawConstants.size(); i++) {
+        char constant = (Character)drawConstants.get(i);
+        for(int j = 0; j < expanded.length(); j++) {
+          if(expanded.charAt(j) == constant) {
+            totalLineCount++;
+          }
+        }
+      }
     }
     PVector oldPos = new PVector(position.x, position.y);
     ArrayList positionStack = new ArrayList();
@@ -131,7 +154,8 @@ class LanguageDescription {
         if(pointFunc == MIN_MAX_FUNC) {
           minMaxPoint(position);
         } else if (pointFunc == DRAW_FUNC) {
-          drawLine(oldPos, position);
+          drawLine(oldPos, position, currentLineIndex, totalLineCount);
+          currentLineIndex++;
         }
       } else if (skipConstants.contains(curChar)) {
         position.x += cos(curAngle) * lineLength;
@@ -157,7 +181,9 @@ class LanguageDescription {
     return poppedPos;
   }
   
-  void drawLine(PVector oldPos, PVector newPos) {
+  void drawLine(PVector oldPos, PVector newPos, int curCount, int totalCount) {
+    stroke(lineColor(curCount, totalCount));
+    fill(lineColor(curCount, totalCount));
     line(((float)Math.floor(oldPos.x)) + 0.5f, ((float)Math.floor(oldPos.y)) + 0.5f, 
          ((float)Math.floor(newPos.x)) + 0.5f, ((float)Math.floor(newPos.y)) + 0.5f);
   }
@@ -165,5 +191,29 @@ class LanguageDescription {
   void minMaxPoint(PVector point) {
     maxPoint.set(max(maxPoint.x, point.x), max(maxPoint.y, point.y), 0.0);
     minPoint.set(min(minPoint.x, point.x), min(minPoint.y, point.y), 0.0); 
+  }
+  
+  color lineColor(int currentSequence, int maxSequence)
+  {
+    int spectrumSlots = spectrum.length - 1;
+
+    int lowerIndex = floor(((float)currentSequence / (float)maxSequence) * spectrumSlots);
+    int upperIndex = ceil(((float)currentSequence / (float)maxSequence) * spectrumSlots);
+    float remainder = upperIndex - (((float)currentSequence / (float)maxSequence) * spectrumSlots);
+    remainder = 1.0f - remainder;
+
+    int rLower = spectrum[lowerIndex] >> 16 & 0xff;  
+    int gLower = spectrum[lowerIndex] >> 8 & 0xff;  
+    int bLower = spectrum[lowerIndex] & 0xff;
+
+    int rUpper = spectrum[upperIndex] >> 16 & 0xff; 
+    int gUpper = spectrum[upperIndex] >> 8 & 0xff;
+    int bUpper = spectrum[upperIndex] & 0xff;
+
+    int rInterp = ceil((float)(rUpper - rLower) * remainder) + rLower;
+    int gInterp = ceil((float)(gUpper - gLower) * remainder) + gLower;
+    int bInterp = ceil((float)(bUpper - bLower) * remainder) + bLower;
+
+    return color(rInterp, gInterp, bInterp);
   }
 }
