@@ -3,8 +3,6 @@ class LanguageDescription {
   int MIN_MAX_FUNC = 0;
   int DRAW_FUNC = 1;
   
-  PVector minPoint;
-  PVector maxPoint;
   float systemAngle;
   float lineLength;
   int iterations;
@@ -20,6 +18,9 @@ class LanguageDescription {
   
   boolean needsUpdate;
   
+  LanguageRange range;
+  LanguageLine lineDrawer;
+  
   LanguageDescription(String theAxiom, HashMap theProductions, float theAngle, int defaultIterations) {
     this(theAxiom, theProductions, theAngle, defaultIterations, null, null);
   }
@@ -32,9 +33,6 @@ class LanguageDescription {
     iterations = defaultIterations;
     productions = theProductions;
     
-    minPoint = new PVector(0,0);
-    maxPoint = new PVector(0,0);
-    
     drawConstants = theDrawConstants;
     if(drawConstants == null) {
       drawConstants = new ArrayList();
@@ -46,16 +44,6 @@ class LanguageDescription {
       skipConstants = new ArrayList();
       skipConstants.add('G');
     }
-    
-    spectrum = new color[7];
-    
-    spectrum[0] = #FF0000;
-    spectrum[1] = #FFFF00;
-    spectrum[2] = #00FF00;
-    spectrum[3] = #00FFFF;
-    spectrum[4] = #0000FF;
-    spectrum[5] = #FF00FF;
-    spectrum[6] = #FF0000;
     
     needsUpdate = true;
   }
@@ -74,23 +62,26 @@ class LanguageDescription {
       lineLength = 1;
       calcMinMaxPoints();
       
-      println("Max: " + maxPoint.x + ", " + maxPoint.y);
-      println("Min: " + minPoint.x + ", " + minPoint.y);
+      println("Max: " + range.maxPoint.x + ", " + range.maxPoint.y);
+      println("Min: " + range.minPoint.x + ", " + range.minPoint.y);
       
-      lineLength = min((width - (margin * 2.0)) / (maxPoint.x - minPoint.x), 
-                       (height - (margin * 2.0)) / (maxPoint.y - minPoint.y));
+      lineLength = min((width - (margin * 2.0)) / (range.maxPoint.x - range.minPoint.x), 
+                       (height - (margin * 2.0)) / (range.maxPoint.y - range.minPoint.y));
+      
+      background(0x000000);
+      
+      lineDrawer = new LanguageLine(range.pointCount);
+      PVector startPoint = new PVector((-range.minPoint.x * lineLength) + margin, 
+                                       (-range.minPoint.y * lineLength) + margin);
+      traverseSystem(startPoint, lineDrawer);
       
       needsUpdate = false;
     }
-    
-    traverseSystem(DRAW_FUNC);
   }
   
   void calcMinMaxPoints() {
-    minPoint.set(0,0,0);
-    maxPoint.set(0,0,0);
-    
-    traverseSystem(MIN_MAX_FUNC);
+    range = new LanguageRange();
+    traverseSystem(new PVector(0, 0), range);
   }
   
   String generateExpanded(String expandAxiom, int expandIterations) {
@@ -112,23 +103,11 @@ class LanguageDescription {
     return returnExpansion;
   }
   
-  void traverseSystem(int pointFunc) {
+  void traverseSystem(PVector position, LanguageOperation operation) {
     int totalLineCount = 0;
     int currentLineIndex = 0;
-    PVector position = new PVector();
-    if(pointFunc == MIN_MAX_FUNC) {
-      position.set(0,0,0);
-    } else {
-      position.set((-minPoint.x * lineLength) + margin, (-minPoint.y * lineLength) + margin,0);
-      for(int i = 0; i < drawConstants.size(); i++) {
-        char constant = (Character)drawConstants.get(i);
-        for(int j = 0; j < expanded.length(); j++) {
-          if(expanded.charAt(j) == constant) {
-            totalLineCount++;
-          }
-        }
-      }
-    }
+    //PVector position = new PVector();
+    
     PVector oldPos = new PVector(position.x, position.y);
     ArrayList positionStack = new ArrayList();
     float curAngle = 0;
@@ -151,12 +130,9 @@ class LanguageDescription {
         oldPos.set(position.x, position.y, position.z);
         position.x += cos(curAngle) * lineLength;
         position.y += sin(curAngle) * lineLength;
-        if(pointFunc == MIN_MAX_FUNC) {
-          minMaxPoint(position);
-        } else if (pointFunc == DRAW_FUNC) {
-          drawLine(oldPos, position, currentLineIndex, totalLineCount);
-          currentLineIndex++;
-        }
+        
+        operation.languageIterated(oldPos, position, currentLineIndex);
+        currentLineIndex++;
       } else if (skipConstants.contains(curChar)) {
         position.x += cos(curAngle) * lineLength;
         position.y += sin(curAngle) * lineLength;
@@ -179,41 +155,5 @@ class LanguageDescription {
     }
     
     return poppedPos;
-  }
-  
-  void drawLine(PVector oldPos, PVector newPos, int curCount, int totalCount) {
-    stroke(lineColor(curCount, totalCount));
-    fill(lineColor(curCount, totalCount));
-    line(((float)Math.floor(oldPos.x)) + 0.5f, ((float)Math.floor(oldPos.y)) + 0.5f, 
-         ((float)Math.floor(newPos.x)) + 0.5f, ((float)Math.floor(newPos.y)) + 0.5f);
-  }
-  
-  void minMaxPoint(PVector point) {
-    maxPoint.set(max(maxPoint.x, point.x), max(maxPoint.y, point.y), 0.0);
-    minPoint.set(min(minPoint.x, point.x), min(minPoint.y, point.y), 0.0); 
-  }
-  
-  color lineColor(int currentSequence, int maxSequence)
-  {
-    int spectrumSlots = spectrum.length - 1;
-
-    int lowerIndex = floor(((float)currentSequence / (float)maxSequence) * spectrumSlots);
-    int upperIndex = ceil(((float)currentSequence / (float)maxSequence) * spectrumSlots);
-    float remainder = upperIndex - (((float)currentSequence / (float)maxSequence) * spectrumSlots);
-    remainder = 1.0f - remainder;
-
-    int rLower = spectrum[lowerIndex] >> 16 & 0xff;  
-    int gLower = spectrum[lowerIndex] >> 8 & 0xff;  
-    int bLower = spectrum[lowerIndex] & 0xff;
-
-    int rUpper = spectrum[upperIndex] >> 16 & 0xff; 
-    int gUpper = spectrum[upperIndex] >> 8 & 0xff;
-    int bUpper = spectrum[upperIndex] & 0xff;
-
-    int rInterp = ceil((float)(rUpper - rLower) * remainder) + rLower;
-    int gInterp = ceil((float)(gUpper - gLower) * remainder) + gLower;
-    int bInterp = ceil((float)(bUpper - bLower) * remainder) + bLower;
-
-    return color(rInterp, gInterp, bInterp);
   }
 }

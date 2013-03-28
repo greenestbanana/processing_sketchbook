@@ -23,8 +23,6 @@ void setup() {
 }
 
 void draw() {
-  background(0x000000);
-  
   curLanguage.draw();
 }
 
